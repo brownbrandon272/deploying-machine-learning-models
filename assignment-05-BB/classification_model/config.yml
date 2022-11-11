@@ -1,0 +1,100 @@
+# Package Overview
+package_name: classification_model
+
+# Data Files
+training_data_file: train.csv
+test_data_file: test.csv
+
+# Variables
+# The variable we are attempting to predict (sale price)
+target: Survived
+
+pipeline_name: classification_model
+pipeline_save_file: classification_model_output_v
+
+# set train/test split
+test_size: 0.1
+
+# to set the random seed
+random_state: 0
+
+alpha: 0.001
+
+original_features:
+  - Pclass
+  - Name
+  - Sex
+  - Age
+  - SibSp
+  - Parch
+  - Ticket
+  - Fare
+  - Cabin
+  - Embarked
+
+categorical_features_select:
+  - Sex
+  - Pclass
+  - CabinLetter
+  - Embarked
+  - Title
+
+numerical_features_select:
+  - Age
+  - SibSp
+  - Parch
+  - Fare
+  - Missing_Age
+  - CabinNumber
+
+numerical_vars_with_na:
+  - Age
+
+# variable mappings
+sex_vars:
+  - Sex
+sex_mappings:
+  female: 1
+  male: 2
+  NA: -1
+  # Unknown will be 0
+
+pclass_vars:
+  - PClass
+pclass_mappings:
+  1: 1
+  2: 2
+  3: 3
+  NA: -1
+  # Unknown will be 0
+
+cabinletter_vars:
+  - CabinLetter
+cabinletter_mappings:
+  A: 1
+  B: 2
+  C: 3
+  D: 4
+  E: 5
+  F: 6
+  NA: -1
+  # Unknown will be 0
+
+embarked_vars:
+  - Embarked
+embarked_mappings:
+  C: 1
+  Q: 2
+  S: 3
+  NA: -1
+  # Unknown will be 0
+
+title_vars:
+  - Title
+title_mappings:
+  Master: 1
+  Miss: 2
+  Mr: 3
+  Mrs: 4
+  NA: -1
+  # Unknown will be 0
