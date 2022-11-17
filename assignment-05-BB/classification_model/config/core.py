@@ -30,7 +30,6 @@ class ModelConfig(BaseModel):
     All configuration relevant to model
     training and feature engineering.
     """
-
     target: str
     test_size: float
     random_state: int
@@ -39,10 +38,21 @@ class ModelConfig(BaseModel):
     categorical_features_select: List[str]
     numerical_features_select: List[str]
     numerical_vars_with_na: List[str]
-    Sex_mappings: Dict[str, int]
-    Pclass_mappings: Dict[int, int]
-    CabinLetter_mappings: Dict[str, int]
-    Embarked_mappings: Dict[str, int]
+    
+    # Feature Engineering
+    missing_prefix: str
+    cabin_var: str
+    cabin_create_var_str: str
+    cabin_create_var_int: str
+    title_var: str
+    title_create_var_str: str
+    
+    # encoding dictionaries
+    ENC_DICTS: Dict[str, Dict]
+    # # Sex_mappings: Dict[str, int]
+    # # Pclass_mappings: Dict[int, int]
+    # # CabinLetter_mappings: Dict[str, int]
+    # # Embarked_mappings: Dict[str, int]
 
 
 class Config(BaseModel):

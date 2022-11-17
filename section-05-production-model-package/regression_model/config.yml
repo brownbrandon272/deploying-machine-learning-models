@@ -1,3 +1,4 @@
+# NOTE: Indentation matters in YAML
 # Package Overview
 package_name: regression_model
 
@@ -13,11 +14,13 @@ pipeline_name: regression_model
 pipeline_save_file: regression_model_output_v
 
 # Will cause syntax errors since they begin with numbers
+# Dictionary format
 variables_to_rename:
   1stFlrSF: FirstFlrSF
   2ndFlrSF: SecondFlrSF
   3SsnPorch: ThreeSsnPortch
 
+# List format
 features:
   - MSSubClass
   - MSZoning

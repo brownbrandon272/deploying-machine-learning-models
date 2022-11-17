@@ -50,51 +50,72 @@ numerical_features_select:
 numerical_vars_with_na:
   - Age
 
-# variable mappings
-sex_vars:
-  - Sex
-sex_mappings:
-  female: 1
-  male: 2
-  NA: -1
-  # Unknown will be 0
+missing_prefix: Missing_
 
-pclass_vars:
-  - PClass
-pclass_mappings:
-  1: 1
-  2: 2
-  3: 3
-  NA: -1
-  # Unknown will be 0
+cabin_var: Cabin
+cabin_create_var_str: CabinLetter
+cabin_create_var_int: CabinNumber
 
-cabinletter_vars:
-  - CabinLetter
-cabinletter_mappings:
-  A: 1
-  B: 2
-  C: 3
-  D: 4
-  E: 5
-  F: 6
-  NA: -1
-  # Unknown will be 0
+title_var: Title
+title_create_var_str: Name
 
-embarked_vars:
-  - Embarked
-embarked_mappings:
-  C: 1
-  Q: 2
-  S: 3
-  NA: -1
-  # Unknown will be 0
+# Unknown will be 0
+ENC_DICTS:
+  {Sex: {female: 1, male: 2, NA: -1},
+  Pclass: {1: 1, 2: 2, 3: 3, NA: -1},
+  CabinLetter: {A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, NA: -1},
+  Embarked: {C: 1, Q: 2, S: 3, NA: -1},
+  Title: {Master: 1, Miss: 2, Mr: 3, Mrs: 4, NA: -1}
+  }
 
-title_vars:
-  - Title
-title_mappings:
-  Master: 1
-  Miss: 2
-  Mr: 3
-  Mrs: 4
-  NA: -1
-  # Unknown will be 0
+
+
+# # variable mappings
+# sex_vars:
+#   - Sex
+# sex_mappings:
+#   female: 1
+#   male: 2
+#   NA: -1
+#   # Unknown will be 0
+
+# pclass_vars:
+#   - PClass
+# pclass_mappings:
+#   1: 1
+#   2: 2
+#   3: 3
+#   NA: -1
+#   # Unknown will be 0
+
+# cabinletter_vars:
+#   - CabinLetter
+# cabinletter_mappings:
+#   A: 1
+#   B: 2
+#   C: 3
+#   D: 4
+#   E: 5
+#   F: 6
+#   NA: -1
+#   # Unknown will be 0
+
+# embarked_vars:
+#   - Embarked
+# embarked_mappings:
+#   C: 1
+#   Q: 2
+#   S: 3
+#   NA: -1
+#   # Unknown will be 0
+
+# title_vars:
+#   - Title
+# title_mappings:
+#   Master: 1
+#   Miss: 2
+#   Mr: 3
+#   Mrs: 4
+#   NA: -1
+#   # Unknown will be 0
+

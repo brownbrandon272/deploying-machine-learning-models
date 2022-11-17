@@ -6,13 +6,19 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class FeatureTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, verbose = False):
+    def __init__(self,
+            # missing_prefix:str,
+            # title_var:str, title_create_var_str:str,
+            # cabin_var:str, cabin_create_var_str:str, cabin_create_var_int:int,
+            model_config:object,
+            verbose = False,
+            ):
         """
         Constructor Function.
         Because I will be using this in a pipeline, __init__() is
         called when pipeline is first created.
         """
-        self.config = Config()
+        self.config = model_config
         self.verbose = verbose
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
@@ -31,14 +37,14 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
         return self
         
     def createMissing(self):
-        for x in self.config.missing:
-            self.data['Missing_' + x] = self.data[x].isna() + 0
+        for x in self.config.numerical_vars_with_na:
+            self.data[self.config.missing_prefix + x] = self.data[x].isna() + 0
         return self
 
     def createTitle(self):
         ## Name -> Title
-        self.data['Title'] = \
-            self.data['Name'].apply(lambda x: x[x.find(',')+2 : x.find('.')])
+        self.data[self.config.title_var] = \
+            self.data[self.config.title_create_var_str].apply(lambda x: x[x.find(',')+2 : x.find('.')])
         return self
 
     def createCabin(self):
@@ -48,8 +54,8 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
             except:
                 return None
         ## Cabin -> Cabin Letter and Cabin Number
-        self.data['CabinLetter'] = self.data['Cabin'].str.slice(0,1)
-        self.data['CabinNumber'] = self.data['Cabin'].apply(_get_cabin_number)
+        self.data[self.config.cabin_create_var_str] = self.data[self.config.cabin_var].str.slice(0,1)
+        self.data[self.config.cabin_create_var_int] = self.data[self.config.cabin_var].apply(_get_cabin_number)
         return self
         
     def labelEncoding(self):
@@ -61,50 +67,50 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
         return self
 
 
-class TemporalVariableTransformer(BaseEstimator, TransformerMixin):
-    """Temporal elapsed time transformer."""
+# class TemporalVariableTransformer(BaseEstimator, TransformerMixin):
+#     """Temporal elapsed time transformer."""
 
-    def __init__(self, variables: List[str], reference_variable: str):
+#     def __init__(self, variables: List[str], reference_variable: str):
 
-        if not isinstance(variables, list):
-            raise ValueError("variables should be a list")
+#         if not isinstance(variables, list):
+#             raise ValueError("variables should be a list")
 
-        self.variables = variables
-        self.reference_variable = reference_variable
+#         self.variables = variables
+#         self.reference_variable = reference_variable
 
-    def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need this step to fit the sklearn pipeline
-        return self
+#     def fit(self, X: pd.DataFrame, y: pd.Series = None):
+#         # we need this step to fit the sklearn pipeline
+#         return self
 
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+#     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
 
-        # so that we do not over-write the original dataframe
-        X = X.copy()
+#         # so that we do not over-write the original dataframe
+#         X = X.copy()
 
-        for feature in self.variables:
-            X[feature] = X[self.reference_variable] - X[feature]
+#         for feature in self.variables:
+#             X[feature] = X[self.reference_variable] - X[feature]
 
-        return X
+#         return X
 
 
-class Mapper(BaseEstimator, TransformerMixin):
-    """Categorical variable mapper."""
+# class Mapper(BaseEstimator, TransformerMixin):
+#     """Categorical variable mapper."""
 
-    def __init__(self, variables: List[str], mappings: dict):
+#     def __init__(self, variables: List[str], mappings: dict):
 
-        if not isinstance(variables, list):
-            raise ValueError("variables should be a list")
+#         if not isinstance(variables, list):
+#             raise ValueError("variables should be a list")
 
-        self.variables = variables
-        self.mappings = mappings
+#         self.variables = variables
+#         self.mappings = mappings
 
-    def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need the fit statement to accomodate the sklearn pipeline
-        return self
+#     def fit(self, X: pd.DataFrame, y: pd.Series = None):
+#         # we need the fit statement to accomodate the sklearn pipeline
+#         return self
 
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-        X = X.copy()
-        for feature in self.variables:
-            X[feature] = X[feature].map(self.mappings)
+#     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+#         X = X.copy()
+#         for feature in self.variables:
+#             X[feature] = X[feature].map(self.mappings)
 
-        return X
+#         return X
