@@ -47,6 +47,10 @@ numerical_features_select:
   - Missing_Age
   - CabinNumber
 
+categorical_vars_with_na:
+  - Cabin
+  - Embarked
+
 numerical_vars_with_na:
   - Age
 

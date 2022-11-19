@@ -32,7 +32,7 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
         return self.data
 
     def selectFeatures(self):
-        cols = self.config.cat_vars + self.config.cont_vars
+        cols = self.config.categorical_features_select + self.config.numerical_features_select
         self.data = self.data[cols]
         return self
         

@@ -37,6 +37,7 @@ class ModelConfig(BaseModel):
     original_features: List[str]
     categorical_features_select: List[str]
     numerical_features_select: List[str]
+    categorical_vars_with_na: List[str]
     numerical_vars_with_na: List[str]
     
     # Feature Engineering
