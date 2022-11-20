@@ -29,6 +29,7 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
         self.createMissing()
         self.createTitle()
         self.createCabin()
+        self.selectFeatures()
         return self.data
 
     def selectFeatures(self):
