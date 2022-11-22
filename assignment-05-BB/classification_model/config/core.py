@@ -35,6 +35,7 @@ class ModelConfig(BaseModel):
     random_state: int
     alpha: float
     original_features: List[str]
+    unused_fields: List[str]
     categorical_features_select: List[str]
     numerical_features_select: List[str]
     categorical_vars_with_na: List[str]

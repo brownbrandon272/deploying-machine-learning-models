@@ -11,9 +11,8 @@ from classification_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, con
 
 def load_dataset(*, file_name: str) -> pd.DataFrame:
     dataframe = pd.read_csv(Path(f"{DATASET_DIR}/{file_name}"))
-
-    # rename variables beginning with numbers to avoid syntax errors later
-    # transformed = dataframe.rename(columns=config.model_config.variables_to_rename)
+    dataframe['Embarked'] = dataframe['Embarked'].astype(str)
+    dataframe.drop(labels=config.model_config.unused_fields, axis=1, inplace=True)
     return dataframe
 
 

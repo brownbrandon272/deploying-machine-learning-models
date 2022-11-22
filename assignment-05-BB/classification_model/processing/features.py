@@ -45,7 +45,7 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
     def createTitle(self):
         ## Name -> Title
         self.data[self.config.title_var] = \
-            self.data[self.config.title_create_var_str].apply(lambda x: x[x.find(',')+2 : x.find('.')])
+            self.data[self.config.title_create_var_str].apply(lambda x: x[x.find(',')+2 : x.find('.')]).astype(str)
         return self
 
     def createCabin(self):
@@ -55,7 +55,7 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
             except:
                 return None
         ## Cabin -> Cabin Letter and Cabin Number
-        self.data[self.config.cabin_create_var_str] = self.data[self.config.cabin_var].str.slice(0,1)
+        self.data[self.config.cabin_create_var_str] = self.data[self.config.cabin_var].str.slice(0,1).astype(str)
         self.data[self.config.cabin_create_var_int] = self.data[self.config.cabin_var].apply(_get_cabin_number)
         return self
         
