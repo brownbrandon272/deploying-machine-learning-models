@@ -7,21 +7,21 @@ def test_feature_transformer(sample_input_data):
     transformer = FeatureTransformer(
         model_config=config.model_config,
     )
-    assert sample_input_data["Name"].iat[0] == "" ## TODO 1
-    assert sample_input_data["Cabin"].iat[0] == "" ## TODO 2
+    assert sample_input_data["Name"].iat[0] == "Kelly, Mr. James"
+    assert sample_input_data["Cabin"].iat[14] == "E31"
 
     # When
     subject = transformer.fit_transform(sample_input_data)
 
     # Then
-    assert 'Name' not in subject.data.columns
-    assert 'Cabin' not in subject.data.columns
-    assert 'Ticket' not in subject.data.columns
+    assert "Name" not in subject.columns
+    assert "Cabin" not in subject.columns
+    assert "Ticket" not in subject.columns
 
-    assert subject.data["Title"].iat[0] == "" ## TODO 3
-    assert subject.data["CabinLetter"].iat[0] == "" ## TODO 4
-    assert subject.data["CabinNumber"].iat[0] == 0 ## TODO 5
-    assert subject.data["Missing_Age"].iat[0] == 0 ## TODO 6
+    assert subject["Title"].iat[0] == "Mr"
+    assert subject["CabinLetter"].iat[14] == "E"
+    assert subject["CabinNumber"].iat[14] == 31
+    assert subject["Missing_Age"].iat[0] == 0
 
 
 # def test_temporal_variable_transformer(sample_input_data):

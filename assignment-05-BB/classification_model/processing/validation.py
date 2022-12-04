@@ -15,7 +15,7 @@ def drop_na_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
         for var in config.model_config.original_features
         if var
         not in config.model_config.numerical_vars_with_na
-            + config.model_config.categorical_vars_with_na
+        + config.model_config.categorical_vars_with_na
         and validated_data[var].isnull().sum() > 0
     ]
     validated_data.dropna(subset=new_vars_with_na, inplace=True)

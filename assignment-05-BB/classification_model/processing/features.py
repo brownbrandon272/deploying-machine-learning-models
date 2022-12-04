@@ -1,18 +1,19 @@
 from typing import List
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class FeatureTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self,
-            # missing_prefix:str,
-            # title_var:str, title_create_var_str:str,
-            # cabin_var:str, cabin_create_var_str:str, cabin_create_var_int:int,
-            model_config:object,
-            verbose = False,
-            ):
+    def __init__(
+        self,
+        # missing_prefix:str,
+        # title_var:str, title_create_var_str:str,
+        # cabin_var:str, cabin_create_var_str:str, cabin_create_var_int:int,
+        model_config: object,
+        verbose=False,
+    ):
         """
         Constructor Function.
         Because I will be using this in a pipeline, __init__() is
@@ -33,10 +34,13 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
         return self.data
 
     def selectFeatures(self):
-        cols = self.config.categorical_features_select + self.config.numerical_features_select
+        cols = (
+            self.config.categorical_features_select
+            + self.config.numerical_features_select
+        )
         self.data = self.data[cols]
         return self
-        
+
     def createMissing(self):
         for x in self.config.numerical_vars_with_na:
             self.data[self.config.missing_prefix + x] = self.data[x].isna() + 0
@@ -44,8 +48,11 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
 
     def createTitle(self):
         ## Name -> Title
-        self.data[self.config.title_var] = \
-            self.data[self.config.title_create_var_str].apply(lambda x: x[x.find(',')+2 : x.find('.')]).astype(str)
+        self.data[self.config.title_var] = (
+            self.data[self.config.title_create_var_str]
+            .apply(lambda x: x[x.find(",") + 2 : x.find(".")])
+            .astype(str)
+        )
         return self
 
     def createCabin(self):
@@ -54,17 +61,23 @@ class FeatureTransformer(BaseEstimator, TransformerMixin):
                 return int(cabin.split()[-1][1:])
             except:
                 return None
+
         ## Cabin -> Cabin Letter and Cabin Number
-        self.data[self.config.cabin_create_var_str] = self.data[self.config.cabin_var].str.slice(0,1).astype(str)
-        self.data[self.config.cabin_create_var_int] = self.data[self.config.cabin_var].apply(_get_cabin_number)
+        self.data[self.config.cabin_create_var_str] = (
+            self.data[self.config.cabin_var].str.slice(0, 1).astype(str)
+        )
+        self.data[self.config.cabin_create_var_int] = self.data[
+            self.config.cabin_var
+        ].apply(_get_cabin_number)
         return self
-        
+
     def labelEncoding(self):
-        for col, enc_dict in zip(self.config.ENC_DICTS.keys(), self.config.ENC_DICTS.values()):
-            self.data[col] = self.data[col] \
-                .map(enc_dict) \
-                .fillna(0) \
-                .replace({-1: np.nan})
+        for col, enc_dict in zip(
+            self.config.ENC_DICTS.keys(), self.config.ENC_DICTS.values()
+        ):
+            self.data[col] = (
+                self.data[col].map(enc_dict).fillna(0).replace({-1: np.nan})
+            )
         return self
 
 

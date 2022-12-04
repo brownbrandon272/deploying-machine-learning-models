@@ -11,48 +11,57 @@
 # from sklearn.pipeline import Pipeline
 # from sklearn.preprocessing import Binarizer, MinMaxScaler
 
+# from sklearn.model_selection import cross_val_score
+import lightgbm as lgb
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline  # , FeatureUnion
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
 from classification_model.config.core import config
 from classification_model.processing import features as pp
 
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline # , FeatureUnion
-from sklearn.compose import ColumnTransformer
-# from sklearn.model_selection import cross_val_score
-import lightgbm as lgb
 
 def create_pipeline():
     # Define categorical pipeline
-    cat_pipe = Pipeline([
-        ('imputer', SimpleImputer(strategy='constant', fill_value=-1)),
-        ('encoder', OneHotEncoder(handle_unknown='ignore', sparse=False))
-        # ignored unkowns would be given a row of all zeroes, but labelEncoding() in FeatureTransformer() is already assigning them class "0"
-    ])
+    cat_pipe = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="constant", fill_value=-1)),
+            ("encoder", OneHotEncoder(handle_unknown="ignore", sparse=False))
+            # ignored unkowns would be given a row of all zeroes, but labelEncoding() in FeatureTransformer() is already assigning them class "0"
+        ]
+    )
 
     # Define numerical pipeline
-    num_pipe = Pipeline([
-        ('imputer', SimpleImputer(strategy='median')),
-        ('scaler', StandardScaler())
-    ])
+    num_pipe = Pipeline(
+        [("imputer", SimpleImputer(strategy="median")), ("scaler", StandardScaler())]
+    )
 
     # config = Config()
     # Combine categorical and numerical pipelines
-    columnTransform = ColumnTransformer([
-        ('cat', cat_pipe, config.model_config.categorical_features_select),
-        ('num', num_pipe, config.model_config.numerical_features_select)
-    ])
+    columnTransform = ColumnTransformer(
+        [
+            ("cat", cat_pipe, config.model_config.categorical_features_select),
+            ("num", num_pipe, config.model_config.numerical_features_select),
+        ]
+    )
 
-    preprocessor = Pipeline([
-        ('features', pp.FeatureTransformer(model_config=config.model_config)),
-        ('columnTransform', columnTransform)
-    ])
+    preprocessor = Pipeline(
+        [
+            ("features", pp.FeatureTransformer(model_config=config.model_config)),
+            ("columnTransform", columnTransform),
+        ]
+    )
 
     # Fit a pipeline with transformers and an estimator to the training data
-    pipe = Pipeline([
-        ('preprocessor', preprocessor),
-        ('model', lgb.LGBMClassifier(learning_rate=0.025))
-    ])
+    pipe = Pipeline(
+        [
+            ("preprocessor", preprocessor),
+            ("model", lgb.LGBMClassifier(learning_rate=0.025)),
+        ]
+    )
     return pipe
+
 
 price_pipe = create_pipeline()
 
